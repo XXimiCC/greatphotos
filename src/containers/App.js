@@ -15,7 +15,7 @@ import Main from '../components/Main';
 class App extends Component {
     render() {
         const {actions} = this.props;
-        return <Main actions={actions}/>;
+        return <Main actions={actions}>{this.props.children}</Main>;
     }
 }
 /* Populated by react-webpack-redux:reducer
@@ -37,4 +37,5 @@ function mapDispatchToProps(dispatch) {
     const actionMap = {actions: bindActionCreators(actions, dispatch)};
     return actionMap;
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(App);

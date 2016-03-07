@@ -1,17 +1,20 @@
-require('materialize.css');
-require('materialize.js');
+import 'normalize.css';
+import 'styles/index.scss';
+import 'materialize.css';
+import 'materialize.js';
+
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import configureStore from './stores';
-import App from './containers/App';
-import 'react-materialize';
+import AppRouter from './router';
+
 
 const store = configureStore();
 
 render(
   <Provider store={store}>
-    <App />
+    <AppRouter></AppRouter>
   </Provider>,
   document.getElementById('app')
 );
