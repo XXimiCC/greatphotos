@@ -25,15 +25,8 @@ class User {
         return q.when(localStorage.get(LS_USERS));
     }
 
-    static createUser(login, password, firstName, lastName) {
+    static createUser(user) {
         return User.getUsers().then(function (users) {
-            let user = {
-                login,
-                password,
-                firstName,
-                lastName
-            };
-
             users.push(user);
             localStorage.set(LS_USERS, users);
 

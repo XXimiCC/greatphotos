@@ -1,8 +1,10 @@
+import thunkMiddleware from 'redux-thunk';
 import * as redux from 'redux';
 import reducers from '../reducers';
+import initialState from './initialState';
 
-function createStore(initialState) {
-  const store = redux.createStore(reducers, initialState)
+function createStore() {
+  const store = redux.createStore(reducers, initialState);
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
@@ -15,4 +17,8 @@ function createStore(initialState) {
   return store
 }
 
-export default createStore;
+const createStoreWithMiddleware = redux.applyMiddleware(
+    thunkMiddleware
+)(createStore);
+
+export default createStoreWithMiddleware;

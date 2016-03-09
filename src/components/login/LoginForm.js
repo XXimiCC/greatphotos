@@ -25,7 +25,7 @@ class LoginForm extends React.Component {
                     }
                     actions={[<Link to='/registration'>REGISTER</Link>]}>
                     <Row>
-                        <Input ref="login" s={12} label="User name" />
+                        <Input ref="username" s={12} label="User name" />
                         <Input ref="password" type="password" label="Password" s={12} />
                         <div className="right-align login-bnt-wrapper">
                             <Button  waves='light' className="pink" onClick={this.onClickSignIn.bind(this)}>Sign In</Button>
@@ -39,9 +39,9 @@ class LoginForm extends React.Component {
 
     onClickSignIn(e) {
         let dispatch = this.props.dispatch,
-            {login, password} = this.refs;
+            {username, password} = this.refs;
 
-        dispatch(login(login, password));
+        dispatch(login(username, password));
     }
 }
 

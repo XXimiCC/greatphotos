@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { login } from '../../actions/user';
+import { registration } from '../../actions/user';
 import {Link} from 'react-router'
 
 import {
@@ -39,9 +39,15 @@ class RegistrationForm extends React.Component {
 
     onClickSignUp(e) {
         let dispatch = this.props.dispatch,
-            [login, password, firstName, lastName] = this.refs;
+            refs = this.refs,
+            user = {
+                login: refs.login,
+                password: refs.password,
+                firstName: refs.firstName,
+                lastName: refs.lastName
+            };
 
-        dispatch(login(login, password));
+        dispatch(registration(user));
     }
 }
 

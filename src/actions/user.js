@@ -23,16 +23,52 @@ export function failureLogin(error) {
     }
 }
 
-export function login(login, password) {
+export function login(username, password) {
     return function (dispatch) {
         dispatch(requestLogin.apply(null, arguments));
 
-        User.findUser(login, password)
+        User.findUser(username, password)
             .then(function (user) {
                 dispatch(successLogin(user));
             })
             .catch(function (error) {
                 dispatch(failureLogin(error));
+            })
+    }
+}
+
+export function requestCreateUser(user) {
+    return {
+        type: actions.CREATE_USER_REQUEST,
+        user
+    }
+}
+
+export function successCreateUser(user) {
+    return {
+        type: actions.CREATE_USER_SUCCESS,
+        user
+    }
+}
+
+export function failureCreateUser(error) {
+    return {
+        type: actions.CREATE_USER_FAILURE,
+        error
+    }
+}
+
+
+export function registration(user) {
+    return function (dispatch) {
+        dispatch(requestCreateUser.apply(null, arguments));
+
+        User.createUser(user)
+            .then(function (user) {
+                dispatch(successCreateUser(user));
+            })
+            .catch(function (error) {
+                dispatch(failureCreateUser(error));
             })
     }
 }
