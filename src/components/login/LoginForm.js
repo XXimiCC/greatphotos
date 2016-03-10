@@ -4,42 +4,42 @@ import { connect } from 'react-redux';
 import { login } from '../../actions/user';
 import {Link} from 'react-router'
 
-import {
-    Col,
-    Card,
-    Row,
-    Input,
-    Button,
-    CardTitle
-} from 'react-materialize';
-
 class LoginForm extends React.Component {
     render() {
-
-
         return (
-            <Col m={6} s={12} {...this.props}>
-                <Card textClassName='white-text'
-                    header={
-                        <CardTitle image="" className="indigo white-text login-header">Login</CardTitle>
-                    }
-                    actions={[<Link to='/registration'>REGISTER</Link>]}>
-                    <Row>
-                        <Input ref="username" s={12} label="User name" />
-                        <Input ref="password" type="password" label="Password" s={12} />
-                        <div className="right-align login-bnt-wrapper">
-                            <Button  waves='light' className="pink" onClick={this.onClickSignIn.bind(this)}>Sign In</Button>
+            <div className="col s12 m6" {...this.props}>
+                <div className='card white-text'>
+                    <div className="card-image">
+                        <span className="card-title indigo white-text login-header">Login</span>
+                    </div>
+                    <div className="card-content">
+                        <div className="row">
+                            <div className="input-field col s12">
+                                <input ref="username" id="username" type="text" className="validate" />
+                                <label htmlFor="username">User name</label>
+                            </div>
+                            <div className="input-field col s12">
+                                <input ref="password" id="password" type="password" className="validate" />
+                                <label htmlFor="password">Password</label>
+                            </div>
+                            <div className="right-align login-bnt-wrapper">
+                                <button className="pink waves-effect waves-light btn" onClick={this.onClickSignIn.bind(this)}>Sign In</button>
+                            </div>
                         </div>
-                    </Row>
-                </Card>
-            </Col>
-
+                    </div>
+                    <div className="card-action">
+                        <Link to='/registration'>REGISTER</Link>
+                    </div>
+                </div>
+            </div>
         );
     }
 
-    onClickSignIn(e) {
+    onClickSignIn() {
         let dispatch = this.props.dispatch,
-            {username, password} = this.refs;
+            refs = this.refs,
+            username = refs.username.value,
+            password = refs.password.value;
 
         dispatch(login(username, password));
     }

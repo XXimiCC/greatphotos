@@ -4,47 +4,57 @@ import { connect } from 'react-redux';
 import { registration } from '../../actions/user';
 import {Link} from 'react-router'
 
-import {
-    Col,
-    Card,
-    Row,
-    Input,
-    Button,
-    CardTitle
-} from 'react-materialize';
-
 class RegistrationForm extends React.Component {
     render() {
         return (
-            <Col m={6} s={12} {...this.props}>
-                <Card textClassName='white-text'
-                    header={
-                        <CardTitle image="" className="indigo white-text login-header">Registration</CardTitle>
-                    }
-                    actions={[<Link to='/login'>Back to Login</Link>]}>
-                    <Row>
-                        <Input ref="login" s={12} label="Username" />
-                        <Input ref="password" type="password" label="Password" s={12} />
-                        <Input ref="rePassword" type="password" label="Re-type password" s={12} />
-                        <Input ref="firstName" s={12} label="First name" />
-                        <Input ref="lastName" s={12} label="Last name" />
-                        <div className="right-align login-bnt-wrapper">
-                            <Button  waves='light' className="pink" onClick={this.onClickSignUp.bind(this)}>Sing Up</Button>
+            <div className="col s12 m6" {...this.props}>
+                <div className='white-text card'>
+                    <div className="card-image">
+                        <span className="card-title indigo white-text login-header">Registration</span>
+                    </div>
+                    <div className="card-content">
+                        <div className="row">
+                            <div className="input-field col s12">
+                                <input ref="username" id="username" type="text" className="validate" />
+                                <label htmlFor="username">User name</label>
+                            </div>
+                            <div className="input-field col s12">
+                                <input ref="password" id="password" type="password" className="validate" />
+                                <label htmlFor="password">Password</label>
+                            </div>
+                            <div className="input-field col s12">
+                                <input ref="password" id="rePassword" type="password" className="validate" />
+                                <label htmlFor="rePassword">Re-type password</label>
+                            </div>
+                            <div className="input-field col s12">
+                                <input ref="firstName" id="firstName" type="text" className="validate" />
+                                <label htmlFor="firstName">First name</label>
+                            </div>
+                            <div className="input-field col s12">
+                                <input ref="lastName" id="lastName" type="text" className="validate" />
+                                <label htmlFor="lastName">Last name</label>
+                            </div>
+                            <div className="right-align login-bnt-wrapper">
+                                <button  className="pink waves-effect waves-light btn" onClick={this.onClickSignUp.bind(this)}>Sing Up</button>
+                            </div>
                         </div>
-                    </Row>
-                </Card>
-            </Col>
+                    </div>
+                    <div className="card-action">
+                        <Link to='/login'>Back to Login</Link>
+                    </div>
+                </div>
+            </div>
         );
     }
 
-    onClickSignUp(e) {
+    onClickSignUp() {
         let dispatch = this.props.dispatch,
             refs = this.refs,
             user = {
-                login: refs.login,
-                password: refs.password,
-                firstName: refs.firstName,
-                lastName: refs.lastName
+                username: refs.username.value,
+                password: refs.password.value,
+                firstName: refs.firstName.value,
+                lastName: refs.lastName.value
             };
 
         dispatch(registration(user));
@@ -52,4 +62,10 @@ class RegistrationForm extends React.Component {
 }
 
 
-export default connect()(RegistrationForm);
+function select(state) {
+    return {
+        user: state.get('user').toJS()
+    }
+}
+
+export default connect(select)(RegistrationForm);

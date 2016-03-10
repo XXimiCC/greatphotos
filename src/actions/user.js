@@ -1,31 +1,42 @@
 import * as actions from './actionTypes';
 import User from '../models/User';
 
-export function requestLogin(login, password) {
+export function requestLogin(username, password) {
     return {
         type: actions.LOGIN_USER_REQUEST,
-        login,
-        password
+        payload: {
+            username,
+            password
+        }
     }
 }
 
 export function successLogin(user) {
     return {
         type: actions.LOGIN_USER_SUCCESS,
-        user
+        payload: {
+            user
+        },
+        meta: {
+            transition: () => ({
+                pathname: '/registration'
+            })
+        }
     }
 }
 
 export function failureLogin(error) {
     return {
         type: actions.LOGIN_USER_FAILURE,
-        error
+        payload: {
+            error
+        }
     }
 }
 
 export function login(username, password) {
     return function (dispatch) {
-        dispatch(requestLogin.apply(null, arguments));
+        dispatch(requestLogin(username, password));
 
         User.findUser(username, password)
             .then(function (user) {
@@ -37,38 +48,45 @@ export function login(username, password) {
     }
 }
 
-export function requestCreateUser(user) {
+export function requestRegistration(user) {
     return {
-        type: actions.CREATE_USER_REQUEST,
-        user
+        type: actions.REGISTRATION_REQUEST,
+        payload: {
+            user
+        }
     }
 }
 
-export function successCreateUser(user) {
+export function successRegistration(user) {
     return {
-        type: actions.CREATE_USER_SUCCESS,
-        user
+        type: actions.REGISTRATION_SUCCESS,
+        payload: {
+            user
+        }
     }
 }
 
-export function failureCreateUser(error) {
+export function failureRegistration(error) {
     return {
-        type: actions.CREATE_USER_FAILURE,
-        error
+        type: actions.REGISTRATION_FAILURE,
+        payload: {
+            error
+        }
     }
 }
 
 
 export function registration(user) {
     return function (dispatch) {
-        dispatch(requestCreateUser.apply(null, arguments));
+        dispatch(requestRegistration(user));
 
-        User.createUser(user)
+        return User.createUser(user)
             .then(function (user) {
-                dispatch(successCreateUser(user));
+                dispatch(successRegistration(user));
             })
             .catch(function (error) {
-                dispatch(failureCreateUser(error));
+                console.error(error);
+                dispatch(failureRegistration(error));
             })
     }
 }

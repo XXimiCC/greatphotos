@@ -5,8 +5,7 @@ export default Immutable.fromJS({
         loading: false,
         currentUser: null
     },
-    users: {
-        loading: false,
-        usersList: []
+    registration: {
+        loading: false
     }
 });

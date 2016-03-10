@@ -1,15 +1,15 @@
 import React from 'react';
 
-import {Row} from 'react-materialize';
 
+//Class for wrap content into display center
 class CenterContentWrapper extends React.Component {
     render() {
         return (
-            <Row>
+            <div className='row'>
                 <div className="valign-wrapper full-screen">
                     {this.props.children}
                 </div>
-            </Row>
+            </div>
         );
     }
 }
