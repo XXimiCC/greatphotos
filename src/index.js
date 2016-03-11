@@ -8,8 +8,8 @@ import { Provider } from 'react-redux';
 import createStore from './stores';
 import { Router, Route, browserHistory, IndexRedirect } from 'react-router'
 import App from './containers/App';
-import LoginPage from './components/login/LoginPage';
-import RegistrationPage from './components/registration/RegistrationPage';
+import LoginPage from './components/LoginPage';
+import RegistrationPage from './components/RegistrationPage';
 import { syncHistoryWithStore} from 'react-router-redux';
 import handleTransitions from 'redux-history-transitions';
 
@@ -17,9 +17,6 @@ const enhancer = handleTransitions(browserHistory);
 
 const store = createStore(browserHistory, enhancer);
 console.log('Initial state', store.getState().toJS());
-store.subscribe(() =>
-    console.log(store.getState().toJS())
-);
 
 //React-router-redux config
 

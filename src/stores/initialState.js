@@ -2,8 +2,13 @@ import Immutable from 'immutable';
 
 export default Immutable.fromJS({
     user: {
-        loading: false,
         currentUser: null
+    },
+    loginForm: {
+        loading: false,
+        canSubmit: false,
+        errors: null,
+        resetPassword: false
     },
     registration: {
         loading: false

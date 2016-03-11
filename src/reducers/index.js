@@ -7,11 +7,12 @@
  *          you edit them, they are not updated again.
  */
 import { combineReducers } from 'redux-immutable';
-import {user, registration} from './user';
+import {user, registration, loginForm} from './user';
 import routing from './routing';
 
 const reducers = combineReducers({
     user,
+    loginForm,
     registration,
     routing: routing
 });

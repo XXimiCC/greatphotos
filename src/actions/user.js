@@ -25,11 +25,11 @@ export function successLogin(user) {
     }
 }
 
-export function failureLogin(error) {
+export function failureLogin(errors) {
     return {
         type: actions.LOGIN_USER_FAILURE,
         payload: {
-            error
+            errors
         }
     }
 }
@@ -38,13 +38,17 @@ export function login(username, password) {
     return function (dispatch) {
         dispatch(requestLogin(username, password));
 
-        User.findUser(username, password)
-            .then(function (user) {
-                dispatch(successLogin(user));
-            })
-            .catch(function (error) {
-                dispatch(failureLogin(error));
-            })
+        setTimeout(function () {
+            User.findUser(username, password)
+                .then(function (user) {
+                    dispatch(successLogin(user));
+                })
+                .catch(function (errors) {
+                    dispatch(loginResetPassword(true));
+                    dispatch(failureLogin(errors));
+                });
+        }, 1000);
+
     }
 }
 
@@ -85,8 +89,24 @@ export function registration(user) {
                 dispatch(successRegistration(user));
             })
             .catch(function (error) {
-                console.error(error);
                 dispatch(failureRegistration(error));
             })
+    }
+}
+
+export function loginCanSubmit(canSubmit) {
+    return {
+        type: actions.LOGIN_CAN_SUBMIT,
+        payload: {
+            canSubmit
+        }
+    }
+}
+export function loginResetPassword(resetPassword) {
+    return {
+        type: actions.LOGIN_RESET_PASSWORD,
+        payload: {
+            resetPassword
+        }
     }
 }

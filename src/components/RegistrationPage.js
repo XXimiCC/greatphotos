@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CenterContentWrapper from '../CenterContentWrapper';
+import CenterContentWrapper from './CenterContentWrapper';
 import RegistrationForm from './RegistrationForm';
 
 class RegistrationPage extends React.Component {

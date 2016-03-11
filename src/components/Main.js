@@ -1,16 +1,15 @@
 import React from 'react';
 
 class AppComponent extends React.Component {
-  render() {
-    return (
-        <div className="container">
-            {this.props.children}
-        </div>
-    );
-  }
+    render() {
+        return (
+            <div className="container">
+                {this.props.children}
+            </div>
+        );
+    }
 }
 
-AppComponent.defaultProps = {
-};
+AppComponent.defaultProps = {};
 
 export default AppComponent;

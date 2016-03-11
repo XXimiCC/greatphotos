@@ -20,7 +20,17 @@ export default function createStore(history, enhancer) {
     return store
   }
 
+  const logger = store => next => action => {
+    let result = next(action);
+
+    console.log(action.type);
+    console.log(store.getState().toJS());
+
+    return result
+  };
+
   return redux.applyMiddleware(
+      logger,
       thunkMiddleware,
       routerMiddleware(history)
   )(createStore)();

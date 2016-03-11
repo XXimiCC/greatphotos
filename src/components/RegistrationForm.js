@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { registration } from '../../actions/user';
+import { registration } from '../actions/user';
 import {Link} from 'react-router'
 
 class RegistrationForm extends React.Component {
@@ -34,7 +34,7 @@ class RegistrationForm extends React.Component {
                                 <input ref="lastName" id="lastName" type="text" className="validate" />
                                 <label htmlFor="lastName">Last name</label>
                             </div>
-                            <div className="right-align login-bnt-wrapper">
+                            <div className="right-align p-r-10">
                                 <button  className="pink waves-effect waves-light btn" onClick={this.onClickSignUp.bind(this)}>Sing Up</button>
                             </div>
                         </div>

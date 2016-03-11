@@ -17,7 +17,7 @@ class User {
                 }
             }
 
-            return finedUser ? q.when(finedUser) : q.reject();
+            return finedUser ? q.when(finedUser) : q.reject('Invalid login or password');
         })
     }
 
