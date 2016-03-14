@@ -19,7 +19,7 @@ export function successLogin(user) {
         },
         meta: {
             transition: () => ({
-                pathname: '/registration'
+                pathname: '/list'
             })
         }
     }
@@ -44,7 +44,6 @@ export function login(username, password) {
                     dispatch(successLogin(user));
                 })
                 .catch(function (errors) {
-                    dispatch(loginResetPassword(true));
                     dispatch(failureLogin(errors));
                 });
         }, 1000);
@@ -66,15 +65,20 @@ export function successRegistration(user) {
         type: actions.REGISTRATION_SUCCESS,
         payload: {
             user
+        },
+        meta: {
+            transition: () => ({
+                pathname: '/login'
+            })
         }
     }
 }
 
-export function failureRegistration(error) {
+export function failureRegistration(errors) {
     return {
         type: actions.REGISTRATION_FAILURE,
         payload: {
-            error
+            errors
         }
     }
 }
@@ -84,13 +88,15 @@ export function registration(user) {
     return function (dispatch) {
         dispatch(requestRegistration(user));
 
-        return User.createUser(user)
+        setTimeout(function () {
+            User.createUser(user)
             .then(function (user) {
                 dispatch(successRegistration(user));
             })
-            .catch(function (error) {
-                dispatch(failureRegistration(error));
+            .catch(function (errors) {
+                dispatch(failureRegistration(errors));
             })
+        }, 1000);
     }
 }
 
@@ -102,11 +108,31 @@ export function loginCanSubmit(canSubmit) {
         }
     }
 }
-export function loginResetPassword(resetPassword) {
+
+export function loginSetErrors(errors) {
     return {
-        type: actions.LOGIN_RESET_PASSWORD,
+        type: actions.LOGIN_SET_ERRORS,
         payload: {
-            resetPassword
+            errors: errors
+        }
+    }
+}
+
+
+export function registrationCanSubmit(canSubmit) {
+    return {
+        type: actions.REGISTRATION_CAN_SUBMIT,
+        payload: {
+            canSubmit
+        }
+    }
+}
+
+export function registrationSetErrors(errors) {
+    return {
+        type: actions.REGISTRATION_SET_ERRORS,
+        payload: {
+            errors: errors
         }
     }
 }

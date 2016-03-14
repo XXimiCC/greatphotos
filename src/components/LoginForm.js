@@ -5,7 +5,7 @@ import { login } from '../actions/user';
 import {Link} from 'react-router'
 import Input from './Input';
 import {Form} from 'formsy-react';
-import {loginCanSubmit, loginResetPassword} from '../actions/user';
+import {loginCanSubmit, loginSetErrors} from '../actions/user';
 import Loader from './Loader';
 
 class LoginForm extends React.Component {
@@ -17,28 +17,16 @@ class LoginForm extends React.Component {
     }
 
     componentDidUpdate() {
-
-
-
-    }
-
-    componentDidUpdate() {
         let dispatch = this.props.dispatch;
 
-        if (this.props.resetPassword) {
-            this.refs.password.resetValue();
-            dispatch(loginResetPassword(false));
-        }
         if (this.props.errors) {
-            this.refs.form.updateInputsWithError({
-                password: this.props.errors
-            });
+            this.refs.form.updateInputsWithError(this.props.errors);
+            dispatch(loginSetErrors(null));
         }
     }
 
     render() {
-        let errors = this.props.errors,
-            loading = this.props.loading;
+        let loading = this.props.loading;
 
         return (
             <Form ref="form" className="col s12 m6" onValid={this.onValid} onInvalid={this.onInvalid}
@@ -51,7 +39,7 @@ class LoginForm extends React.Component {
                         <div className="row">
                             <Input name='username' id='username' label='User name'
                                    validationError='User name is required' required/>
-                            <Input showErrors={this.props.errors} ref='password' type='password' name='password' id='password' label='Password' required/>
+                            <Input ref='password' type='password' name='password' id='password' label='Password' required/>
 
                             <div className="right-align p-r-10">
                                 <button type="submit" className="pink waves-effect waves-light btn"
@@ -77,10 +65,9 @@ class LoginForm extends React.Component {
         this.props.dispatch(loginCanSubmit(false));
     }
 
-    submit() {
+    submit(model) {
         let dispatch = this.props.dispatch,
-            formValues = this.refs.form.model,
-            {username, password} = formValues;
+            {username, password} = model;
 
         dispatch(login(username, password));
     }

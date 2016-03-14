@@ -7,10 +7,11 @@ export default Immutable.fromJS({
     loginForm: {
         loading: false,
         canSubmit: false,
-        errors: null,
-        resetPassword: false
+        errors: null
     },
-    registration: {
-        loading: false
+    registrationForm: {
+        loading: false,
+        canSubmit: false,
+        errors: null
     }
 });

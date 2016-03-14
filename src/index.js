@@ -10,6 +10,7 @@ import { Router, Route, browserHistory, IndexRedirect } from 'react-router'
 import App from './containers/App';
 import LoginPage from './components/LoginPage';
 import RegistrationPage from './components/RegistrationPage';
+import ImageList from './components/ImageList';
 import { syncHistoryWithStore} from 'react-router-redux';
 import handleTransitions from 'redux-history-transitions';
 
@@ -34,6 +35,7 @@ render(
               <IndexRedirect to="/login" />
               <Route path="login" component={LoginPage}/>
               <Route path="registration" component={RegistrationPage}/>
+              <Route path="list" component={ImageList}/>
           </Route>
       </Router>
   </Provider>,

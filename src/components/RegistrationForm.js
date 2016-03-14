@@ -3,39 +3,54 @@ import { connect } from 'react-redux';
 
 import { registration } from '../actions/user';
 import {Link} from 'react-router'
+import {Form} from 'formsy-react';
+import {registrationCanSubmit, registrationSetErrors} from '../actions/user';
+import Loader from './Loader';
+import Input from './Input';
 
 class RegistrationForm extends React.Component {
+    constructor() {
+        super();
+        this.submit = this.submit.bind(this);
+        this.onValid = this.onValid.bind(this);
+        this.onInvalid = this.onInvalid.bind(this);
+    }
+
+    componentDidUpdate() {
+        let dispatch = this.props.dispatch;
+
+        if (this.props.errors) {
+            this.refs.form.updateInputsWithError(this.props.errors);
+            dispatch(registrationSetErrors(null));
+        }
+    }
+
     render() {
+        let loading = this.props.loading;
+
         return (
-            <div className="col s12 m6" {...this.props}>
-                <div className='white-text card'>
-                    <div className="card-image">
+            <Form ref="form" className="col s12 m6"
+                {...this.props}
+                 onValid={this.onValid}
+                 onInvalid={this.onInvalid}
+                 onValidSubmit={this.submit}>
+                <div className='card'>
+                    <div className="card-image white-text">
                         <span className="card-title indigo white-text login-header">Registration</span>
                     </div>
                     <div className="card-content">
                         <div className="row">
-                            <div className="input-field col s12">
-                                <input ref="username" id="username" type="text" className="validate" />
-                                <label htmlFor="username">User name</label>
-                            </div>
-                            <div className="input-field col s12">
-                                <input ref="password" id="password" type="password" className="validate" />
-                                <label htmlFor="password">Password</label>
-                            </div>
-                            <div className="input-field col s12">
-                                <input ref="password" id="rePassword" type="password" className="validate" />
-                                <label htmlFor="rePassword">Re-type password</label>
-                            </div>
-                            <div className="input-field col s12">
-                                <input ref="firstName" id="firstName" type="text" className="validate" />
-                                <label htmlFor="firstName">First name</label>
-                            </div>
-                            <div className="input-field col s12">
-                                <input ref="lastName" id="lastName" type="text" className="validate" />
-                                <label htmlFor="lastName">Last name</label>
-                            </div>
+                            <Input name='username' id='username' label='User name' required/>
+                            <Input type="password" name='password' id='password' label='Password' required />
+                            <Input type="password" name='rePassword' id='rePassword' label='Re-type password'
+                                   validationErrors={{equalsField:'Passwords must match'}} validations="equalsField:password"/>
+                            <Input name='firstName' id='firstName' label='First name' required/>
+                            <Input name='lastName' id='lastName' label='Last name' required/>
                             <div className="right-align p-r-10">
-                                <button  className="pink waves-effect waves-light btn" onClick={this.onClickSignUp.bind(this)}>Sing Up</button>
+                                <button className="pink waves-effect waves-light btn"
+                                        disabled={!this.props.canSubmit || loading}>
+                                    {!loading ? 'Sign Up' : <Loader size='small'/>}
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -43,29 +58,31 @@ class RegistrationForm extends React.Component {
                         <Link to='/login'>Back to Login</Link>
                     </div>
                 </div>
-            </div>
+            </Form>
         );
     }
 
-    onClickSignUp() {
+    onValid() {
+        this.props.dispatch(registrationCanSubmit(true));
+    }
+
+    onInvalid() {
+        this.props.dispatch(registrationCanSubmit(false));
+    }
+
+    submit(model) {
         let dispatch = this.props.dispatch,
-            refs = this.refs,
-            user = {
-                username: refs.username.value,
-                password: refs.password.value,
-                firstName: refs.firstName.value,
-                lastName: refs.lastName.value
-            };
+            user = Object.assign({}, model);
+
+        delete user.rePassword;
 
         dispatch(registration(user));
     }
 }
 
 
-function select(state) {
-    return {
-        user: state.get('user').toJS()
-    }
+function mapStateToProps(state) {
+    return state.get('registrationForm').toJS();
 }
 
-export default connect(select)(RegistrationForm);
+export default connect(mapStateToProps)(RegistrationForm);

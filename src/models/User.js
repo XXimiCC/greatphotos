@@ -1,5 +1,6 @@
 import lStorage from 'store';
 import q from 'q';
+import _ from 'lodash';
 
 const LS_USERS = 'USERS_LIST';
 
@@ -17,7 +18,7 @@ class User {
                 }
             }
 
-            return finedUser ? q.when(finedUser) : q.reject('Invalid login or password');
+            return finedUser ? q.when(finedUser) : q.reject({password: 'Invalid login or password'});
         })
     }
 
@@ -27,10 +28,17 @@ class User {
 
     static createUser(user) {
         return User.getUsers().then(function (users) {
-            users.push(user);
-            lStorage.set(LS_USERS, users);
-            console.log('USERS', users);
-            return user;
+            let findedUserIndex = _.findIndex(users, ['username', user.username]);
+
+            if (~findedUserIndex) {
+                return q.reject({username: 'User with this username already exists'});
+            } else {
+                users.push(user);
+                lStorage.set(LS_USERS, users);
+                console.log('USERS', users);
+
+                return q.when(user);
+            }
         })
     }
 }

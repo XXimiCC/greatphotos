@@ -5,4 +5,12 @@
   .card-image .card-title{
     width: 100%;
   }
+  label[data-error]{
+    width: 100%;
+    //&:not(.active)::after{
+    //  top: 35px;
+    //  font-size: 0.8rem;
+    //}
+  }
+
 }

@@ -21,21 +21,27 @@ export function loginForm(state, action) {
                 .set('loading', false);
         case actions.LOGIN_CAN_SUBMIT:
             return state.set('canSubmit', action.payload.canSubmit);
-        case actions.LOGIN_RESET_PASSWORD:
-            return state.set('resetPassword', action.payload.resetPassword);
+        case actions.LOGIN_SET_ERRORS:
+            return state.set('errors', action.payload.errors);
         default:
             return state;
     }
 }
 
-export function registration(state, action) {
+export function registrationForm(state, action) {
     switch (action.type) {
         case actions.REGISTRATION_REQUEST:
             return state.set('loading', true);
         case actions.REGISTRATION_SUCCESS:
             return state.set('loading', false);
         case actions.REGISTRATION_FAILURE:
-            return state.set('loading', false);
+            return state
+                .set('errors', action.payload.errors)
+                .set('loading', false);
+        case actions.REGISTRATION_CAN_SUBMIT:
+            return state.set('canSubmit', action.payload.canSubmit);
+        case actions.REGISTRATION_SET_ERRORS:
+            return state.set('errors', action.payload.errors);
         default:
             return state;
     }

@@ -18,7 +18,9 @@ const Input = React.createClass({
             'checkbox',
             'radio'
         ]),
-        wrapperClassName: React.PropTypes.string
+        wrapperClassName: React.PropTypes.string,
+        /** Force error output **/
+        showErrors: React.PropTypes.bool
     },
 
 
@@ -31,18 +33,10 @@ const Input = React.createClass({
         this.setValue(event.currentTarget[this.props.type === 'checkbox' ? 'checked' : 'value']);
     },
     render() {
-
-        // Set a specific className based on the validation
-        // state of this component. showRequired() is true
-        // when the value is empty and the required prop is
-        // passed to the input. showError() is true when the
-        // value typed is invalid
-
-        let className = 'validate ' + (this.props.className || ' ') + ((this.showError() || (this.props.showErrors && this.isPristine())) ? 'invalid' : '');
-
-        // An error message is returned ONLY if the component is invalid
-        // or the server has returned an error message
         const errorMessage = this.getErrorMessage();
+
+        let className = (this.props.className || ' ') + (this.props.className || ' ') +
+            (this.showRequired() ? 'required' : (this.showError() && !this.isPristine()) ? 'invalid' : '');
 
         return (
             <div className={this.props.wrapperClassName || 'input-field col s12'}>
@@ -55,7 +49,7 @@ const Input = React.createClass({
                     className={className}
                     id={this.props.id}
                     />
-                <label htmlFor={this.props.id} data-error={errorMessage || 'wrong'}>{this.props.label}</label>
+                <label htmlFor={this.props.id} data-error={errorMessage}>{this.props.label}</label>
             </div>
         );
     }
