@@ -30,6 +30,10 @@ function getDefaultModules() {
         loader: 'style-loader!css-loader'
       },
       {
+        test: /masonry-layout/,
+        loader: 'imports?define=>false&this=>window'
+      },
+      {
         test: /\.sass/,
         loader: 'style-loader!css-loader!sass-loader?outputStyle=expanded&indentedSyntax'
       },

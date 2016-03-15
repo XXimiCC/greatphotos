@@ -4,7 +4,7 @@ class Image extends React.Component {
     constructor() {
         super();
 
-        this.state = {src: ''};
+        this.state = {src: 'images/loader.gif'};
     }
     
     componentWillMount() {
@@ -15,7 +15,7 @@ class Image extends React.Component {
         if (category) {
             src+=`category/${category}/`
         } else {
-            src+='random/';
+            src+='random/'+Date.now()+new Date();
         }
 
         if (imageWidth && imageHeight) {
@@ -27,12 +27,14 @@ class Image extends React.Component {
 
         xhr.responseType = 'arraybuffer';
 
-        xhr.onload = function( e ) {
+        xhr.onload = function() {
             let arrayBufferView = new Uint8Array( this.response );
             let blob = new Blob( [ arrayBufferView ], { type: 'image/jpeg' } );
             let urlCreator = window.URL || window.webkitURL;
             let imageUrl = urlCreator.createObjectURL( blob );
-            self.setState({src: imageUrl})
+            self.setState({src: imageUrl});
+
+            self.props.onLoad();
         };
 
         xhr.send();
@@ -40,9 +42,18 @@ class Image extends React.Component {
 
     render() {
         return (
-            <img src={this.state.src} {...this.props} width='500' height='500'/>
+            <div {...this.props}>
+                <img src={this.state.src}/>
+            </div>
         )
     }
 }
+
+Image.propTypes = {
+    onLoad: React.PropTypes.func,
+    category: React.PropTypes.string
+};
+
+
 
 export default Image;
