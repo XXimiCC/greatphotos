@@ -1,6 +1,6 @@
 import React from 'react';
 
-class AppComponent extends React.Component {
+class Main extends React.Component {
     render() {
         return (
             <div className="container">
@@ -10,6 +10,4 @@ class AppComponent extends React.Component {
     }
 }
 
-AppComponent.defaultProps = {};
-
-export default AppComponent;
+export default Main;

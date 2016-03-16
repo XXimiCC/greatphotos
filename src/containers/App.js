@@ -8,13 +8,12 @@ import React, {
     Component
 } from 'react';
 import { connect } from 'react-redux';
-import Main from '../components/Main';
+import Main from './Main';
 
 
 class App extends Component {
     render() {
-        const {actions} = this.props;
-        return <Main actions={actions}>{this.props.children}</Main>;
+        return <Main>{this.props.children}</Main>;
     }
 }
 

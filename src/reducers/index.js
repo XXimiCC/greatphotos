@@ -8,13 +8,17 @@
  */
 import { combineReducers } from 'redux-immutable';
 import {user, registrationForm, loginForm} from './user';
+import {imagesList} from './imagesList.js';
 import routing from './routing';
 
 const reducers = combineReducers({
     user,
     loginForm,
     registrationForm,
-    routing: routing
+    routing: routing,
+    home: combineReducers({
+        imagesList
+    })
 });
 
 export default reducers;

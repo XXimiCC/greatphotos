@@ -76,7 +76,7 @@
     "q": "^1.4.1",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
-    "react-list": "^0.7.15",
+    "react-infinite": "^0.9.0",
     "react-redux": "^4.4.0",
     "react-router": "^2.0.0",
     "react-router-redux": "^4.0.0",

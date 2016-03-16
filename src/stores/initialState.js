@@ -13,5 +13,12 @@ export default Immutable.fromJS({
         loading: false,
         canSubmit: false,
         errors: null
+    },
+    home: {
+        imagesList: {
+            pageSize: 20,
+            list: []
+        }
     }
+
 });

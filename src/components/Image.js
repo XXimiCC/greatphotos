@@ -4,13 +4,12 @@ class Image extends React.Component {
     constructor() {
         super();
 
-        this.state = {src: 'images/loader.gif'};
+        this.state = {src: null};
     }
     
     componentWillMount() {
         let {category, imageWidth, imageHeight} = this.props,
-            src = this.props.src || 'https://source.unsplash.com/',
-            self = this;
+            src = this.props.src || 'https://source.unsplash.com/';
 
         if (category) {
             src+=`category/${category}/`
@@ -22,9 +21,14 @@ class Image extends React.Component {
             src+=`${imageWidth}x${imageHeight}/`
         }
 
-        let xhr = new XMLHttpRequest();
-        xhr.open( 'GET', src, true );
+        this.downloadImage(src);
+    }
 
+    downloadImage(src) {
+        let xhr = new XMLHttpRequest(),
+            self = this;
+
+        xhr.open( 'GET', src, true );
         xhr.responseType = 'arraybuffer';
 
         xhr.onload = function() {
@@ -37,12 +41,14 @@ class Image extends React.Component {
             self.props.onLoad();
         };
 
+        xhr.onerror = this.downloadImage.bind(this, src);
+
         xhr.send();
     }
 
     render() {
         return (
-            <div {...this.props}>
+            <div {...this.props} style={{visibility: !this.state.src? 'hidden': 'visible'}}>
                 <img src={this.state.src}/>
             </div>
         )
