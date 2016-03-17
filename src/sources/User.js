@@ -5,29 +5,26 @@ import _ from 'lodash';
 const LS_USERS = 'USERS_LIST';
 
 class User {
-    static findUser(username, password) {
-        return User.getUsers().then(function (users) {
-            let finedUser;
+    static findUser(fields) {
+        return User.getUsers().then((users) => {
+            let finedUser = _.find(users, fields);
 
-            for(let i = 0;i < users.length;i++) {
-                let user = users[i];
-
-                if (user.username === username && user.password === password) {
-                    finedUser = user;
-                    break;
-                }
-            }
-
-            return finedUser ? q.when(finedUser) : q.reject({password: 'Invalid login or password'});
+            return finedUser ? q.when(finedUser) : q.reject('Not found');
         })
     }
 
     static getUsers() {
-        return q.when(lStorage.get(LS_USERS) || []);
+        let defer = q.defer();
+
+        setTimeout(() => {
+            defer.resolve(lStorage.get(LS_USERS) || []);
+        }, 1000);
+
+        return defer.promise;
     }
 
     static createUser(user) {
-        return User.getUsers().then(function (users) {
+        return User.getUsers().then((users) => {
             let findedUserIndex = _.findIndex(users, ['username', user.username]);
 
             if (~findedUserIndex) {

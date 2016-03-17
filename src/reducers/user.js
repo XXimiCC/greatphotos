@@ -4,6 +4,10 @@ export function user(state, action) {
     switch (action.type) {
         case actions.LOGIN_USER_SUCCESS:
             return state.set('currentUser', action.payload.user);
+        case actions.CHECK_USER_SUCCESS:
+            return state.set('currentUser', action.payload.user);
+        case actions.LOGOUT_SUCCESS:
+            return state.set('currentUser', null);
         default:
             return state;
     }

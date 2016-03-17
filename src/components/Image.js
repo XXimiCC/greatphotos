@@ -24,9 +24,15 @@ class Image extends React.Component {
         this.downloadImage(src);
     }
 
+    componentWillUnmount() {
+        this.xhr.abort();
+    }
+
     downloadImage(src) {
         let xhr = new XMLHttpRequest(),
             self = this;
+
+        this.xhr = xhr;
 
         xhr.open( 'GET', src, true );
         xhr.responseType = 'arraybuffer';
@@ -36,8 +42,8 @@ class Image extends React.Component {
             let blob = new Blob( [ arrayBufferView ], { type: 'image/jpeg' } );
             let urlCreator = window.URL || window.webkitURL;
             let imageUrl = urlCreator.createObjectURL( blob );
-            self.setState({src: imageUrl});
 
+            self.setState({src: imageUrl});
             self.props.onLoad();
         };
 
@@ -48,7 +54,7 @@ class Image extends React.Component {
 
     render() {
         return (
-            <div {...this.props} style={{visibility: !this.state.src? 'hidden': 'visible'}}>
+            <div {...this.props}>
                 <img src={this.state.src}/>
             </div>
         )

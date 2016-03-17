@@ -1,6 +1,9 @@
 import * as actions from './actionTypes';
-import User from '../models/User';
+import User from '../sources/User';
+import Auth from '../sources/Auth';
 
+
+/** LOGIN  **/
 export function requestLogin(username, password) {
     return {
         type: actions.LOGIN_USER_REQUEST,
@@ -19,7 +22,7 @@ export function successLogin(user) {
         },
         meta: {
             transition: () => ({
-                pathname: '/list'
+                pathname: '/home'
             })
         }
     }
@@ -38,19 +41,18 @@ export function login(username, password) {
     return function (dispatch) {
         dispatch(requestLogin(username, password));
 
-        setTimeout(function () {
-            User.findUser(username, password)
-                .then(function (user) {
-                    dispatch(successLogin(user));
-                })
-                .catch(function (errors) {
-                    dispatch(failureLogin(errors));
-                });
-        }, 1000);
-
+        return Auth.login(username, password)
+            .then(function (user) {
+                dispatch(successLogin(user));
+            })
+            .catch(function (errors) {
+                dispatch(failureLogin(errors));
+            });
     }
 }
 
+
+/** REGISTRATION **/
 export function requestRegistration(user) {
     return {
         type: actions.REGISTRATION_REQUEST,
@@ -88,15 +90,13 @@ export function registration(user) {
     return function (dispatch) {
         dispatch(requestRegistration(user));
 
-        setTimeout(function () {
-            User.createUser(user)
+        return User.createUser(user)
             .then(function (user) {
                 dispatch(successRegistration(user));
             })
             .catch(function (errors) {
                 dispatch(failureRegistration(errors));
             })
-        }, 1000);
     }
 }
 
@@ -134,5 +134,91 @@ export function registrationSetErrors(errors) {
         payload: {
             errors: errors
         }
+    }
+}
+
+/** USER CHECK **/
+export function requestCheckUser() {
+    return {
+        type: actions.CHECK_USER_REQUEST,
+        payload: {}
+    }
+}
+
+export function successCheckUser(user) {
+    return {
+        type: actions.CHECK_USER_SUCCESS,
+        payload: {
+            user
+        }
+    }
+}
+
+export function failureCheckUser(errors) {
+    return {
+        type: actions.CHECK_USER_FAILURE,
+        payload: {
+            errors
+        }
+    }
+}
+
+export function check() {
+    return function (dispatch) {
+        dispatch(requestCheckUser());
+
+        return Auth.check().then(function (user) {
+                dispatch(successCheckUser(user));
+
+                return user;
+            })
+            .catch(function (errors) {
+                dispatch(failureCheckUser(errors));
+
+                return errors;
+            });
+    }
+}
+
+/** LOGOUT **/
+export function requestLogout() {
+    return {
+        type: actions.LOGOUT_REQUEST,
+        payload: {}
+    }
+}
+
+export function successLogout(user) {
+    return {
+        type: actions.LOGOUT_SUCCESS,
+        payload: {
+            user
+        }
+    }
+}
+
+export function failureLogout(errors) {
+    return {
+        type: actions.LOGOUT_FAILURE,
+        payload: {
+            errors
+        }
+    }
+}
+
+export function logout() {
+    return function (dispatch) {
+        dispatch(requestLogout());
+
+        return Auth.logout().then(function (user) {
+            dispatch(successLogout());
+
+            return user;
+        })
+        .catch(function (errors) {
+            dispatch(failureLogout(errors));
+
+            return errors;
+        });
     }
 }

@@ -11,11 +11,14 @@ import App from './containers/App';
 import LoginPage from './components/LoginPage';
 import RegistrationPage from './components/RegistrationPage';
 import Home from './containers/Home';
+import Container from './containers/Container';
 import ImagesList from './components/ImagesList';
 import { syncHistoryWithStore} from 'react-router-redux';
 import handleTransitions from 'redux-history-transitions';
+import accessor from './authValidation';
 
 const enhancer = handleTransitions(browserHistory);
+
 
 const store = createStore(browserHistory, enhancer);
 console.log('Initial state', store.getState().toJS());
@@ -29,18 +32,23 @@ const history = syncHistoryWithStore(browserHistory, store, {
     }
 });
 
+const validators = accessor(store);
+
 render(
   <Provider store={store}>
       <Router history={history}>
-          <Route path="/" component={App}>
+          <Route component={App}>
               <IndexRedirect to="/login" />
-              <Route path="login" component={LoginPage}/>
-              <Route path="registration" component={RegistrationPage}/>
+              <Route path="/" component={Container}>
+                  <Route path="login" onEnter={validators.onlyGuest} component={LoginPage}/>
+                  <Route path="registration" onEnter={validators.onlyGuest} component={RegistrationPage}/>
+              </Route>
+              <Route path="/" component={Home}>
+                  <IndexRedirect to="/home" />
+                  <Route path="home" component={ImagesList}/>
+              </Route>
           </Route>
-          <Route path="/" component={Home}>
-              <IndexRedirect to="/home" />
-              <Route path="home" component={ImagesList}/>
-          </Route>
+
       </Router>
   </Provider>,
   document.getElementById('app')

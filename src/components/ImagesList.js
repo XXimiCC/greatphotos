@@ -24,6 +24,10 @@ const ImagesList = React.createClass({
         this.loadMore();
     },
 
+    componentWillUnmount: function () {
+        $(document).unbind('scroll', this.onScroll);
+    },
+
 
     onScroll: function () {
         let $el = $(ReactDOM.findDOMNode(this)),

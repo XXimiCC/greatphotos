@@ -8,12 +8,14 @@ import React, {
     Component
 } from 'react';
 import { connect } from 'react-redux';
-import Main from './Main';
-
 
 class App extends Component {
     render() {
-        return <Main>{this.props.children}</Main>;
+        return (
+            <div className="APP">
+                {this.props.children}
+            </div>
+        );
     }
 }
 
